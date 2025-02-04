@@ -1,7 +1,19 @@
 {
   "dependencies": {
     "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
     "express": "^4.21.2",
     "nodemon": "^3.1.9"
-  }
+  },
+  "name": "open_uv_api",
+  "version": "1.0.0",
+  "description": "Using OpenUV API",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew Sipovac",
+  "license": "ISC"
 }
