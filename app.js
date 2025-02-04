@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 const app = express();
 const port = 3000;
 const API_KEY = 'openuv-dadfrm6iashn4-io';
-const API_URL = 'https://api.openuv.io/api/v1/uv?lat=:lat&lng=:lng&alt=:alt&dt=:dt';
+const API_URL = 'https://api.openuv.io/api/v1/uv';
 const GEOCODE_API_URL = 'https://api.positionstack.com/v1/forward';
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,18 +29,24 @@ app.post("/get-coordinates", async (req, res) => {
         const { latitude, longitude } = geocodeResponse.data.data[0];
 
         const uvResponse = await axios.get(API_URL, {
+            headers: {
+                'x-access-token': API_KEY
+            },
             params: {
                 lat: latitude,
                 lng: longitude,
-                alt: 0,
-                dt: Math.floor(Date.now() / 1000)
-            },
-            headers: {
-                'x-api-key': API_KEY
+                dt: new Date().toISOString()
             }
+            
         });
         const uvIndex = uvResponse.data.result.uv;
-        res.send(`UV Index for zip code ${zipCode}: ${uvIndex}`);
+        let message;
+        if(uvIndex >= 3) {
+            message = "You should wear some sunscreen today.";
+        } else {
+            message = "No need for sunscreen today.";
+        }
+        res.render("index.ejs", { message: `UV Index for zip code ${zipCode}: ${uvIndex}. ${message}` });
     } catch (error) {
         console.error(error);
         res.send("Error retrieving UV Index.");

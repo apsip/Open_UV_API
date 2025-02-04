@@ -13,6 +13,9 @@
         <input type="text" name="zipcode" id="zipcode" maxlength="5" required>
         <button type="submit">Do I need to wear sunscreen today?</button>
     </form>
+    <% if (message) { %>
+        <p><%= message %></p>
+    <% } %>
 </body>
  
 
